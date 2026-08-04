@@ -29,8 +29,9 @@ function setupHTML() {
 			<button id="ranks_auto_${x}" class="btn" style="width: 80px;" onclick="RANKS.autoSwitch('${rn}')">OFF</button>
 			<span id="ranks_scale_${x}""></span>${RANKS.fullNames[x]} <h4 id="ranks_amt_${x}">X</h4><br><br>
 			<button onclick="RANKS.reset('${rn}')" class="btn reset" id="ranks_${x}">
-				Reset your ${x>0?RANKS.fullNames[x-1]+"s":'mass and upgrades'}, but ${RANKS.fullNames[x]} up.<span id="ranks_desc_${x}"></span><br>
-				Req: <span id="ranks_req_${x}">X</span>
+				<span class="reset-action">Reset ${x>0?RANKS.fullNames[x-1]+"s":'mass and upgrades'} to gain a ${RANKS.fullNames[x]}.</span>
+				<span class="reset-next"><small>Next reward</small><span id="ranks_desc_${x}"></span></span>
+				<span class="reset-req"><small>Requires</small><b id="ranks_req_${x}">X</b></span>
 			</button>
 		</div>`
 	}
@@ -43,8 +44,9 @@ function setupHTML() {
 			<button id="pres_auto_${x}" class="btn" style="width: 80px;" onclick="PRESTIGES.autoSwitch(${x})">OFF</button>
 			<span id="pres_scale_${x}""></span>${PRESTIGES.fullNames[x]} <h4 id="pres_amt_${x}">X</h4><br><br>
 			<button onclick="PRESTIGES.reset(${x})" class="btn reset" id="pres_${x}">
-				${x>0?"Reset your "+PRESTIGES.fullNames[x-1]+"s":'Force a Quantum reset'}, but ${PRESTIGES.fullNames[x]} up.<span id="pres_desc_${x}"></span><br>
-				Req: <span id="pres_req_${x}">X</span>
+				<span class="reset-action">${x>0?"Reset "+PRESTIGES.fullNames[x-1]+"s":'Force a Quantum reset'} to gain a ${PRESTIGES.fullNames[x]}.</span>
+				<span class="reset-next"><small>Next reward</small><span id="pres_desc_${x}"></span></span>
+				<span class="reset-req"><small>Requires</small><b id="pres_req_${x}">X</b></span>
 			</button>
 		</div>`
 	}
@@ -84,7 +86,7 @@ function setupHTML() {
 		table += `<div id="ranks_reward_div_${x}">`
 		let keys = Object.keys(RANKS.desc[rn])
 		for (let y = 0; y < keys.length; y++) {
-			table += `<span id="ranks_reward_${rn}_${y}"><b>${RANKS.fullNames[x]} ${keys[y]}:</b> ${RANKS.desc[rn][keys[y]]}${RANKS.effect[rn][keys[y]]?` Currently: <span id='ranks_eff_${rn}_${y}'></span>`:""}</span><br>`
+			table += `<div id="ranks_reward_${rn}_${y}"><b>${RANKS.fullNames[x]} ${keys[y]}</b><span>${RANKS.desc[rn][keys[y]]}</span>${RANKS.effect[rn][keys[y]]?`<span class="reward-current"><small>Current</small><span id='ranks_eff_${rn}_${y}'></span></span>`:""}</div>`
 		}
 		table += `</div>`
 	}
@@ -96,7 +98,7 @@ function setupHTML() {
 		table += `<div id="pres_reward_div_${x}">`
 		let keys = Object.keys(PRESTIGES.rewards[x])
 		for (let y = 0; y < keys.length; y++) {
-			table += `<span id="pres_reward_${x}_${y}"><b>${PRESTIGES.fullNames[x]} ${keys[y]}:</b> ${PRESTIGES.rewards[x][keys[y]]}${PRESTIGES.rewardEff[x][keys[y]]?` Currently: <span id='pres_eff_${x}_${y}'></span>`:""}</span><br>`
+			table += `<div id="pres_reward_${x}_${y}"><b>${PRESTIGES.fullNames[x]} ${keys[y]}</b><span>${PRESTIGES.rewards[x][keys[y]]}</span>${PRESTIGES.rewardEff[x][keys[y]]?`<span class="reward-current"><small>Current</small><span id='pres_eff_${x}_${y}'></span></span>`:""}</div>`
 		}
 		table += `</div>`
 	}
@@ -108,9 +110,8 @@ function setupHTML() {
 		x = Number(x)
 		let ee = BEYOND_RANKS.rewardEff[x]
 		for (let y in BEYOND_RANKS.rewards[x]) {
-			table += `<span id="br_reward_${x}_${y}"><b>${getRankTierName(x+5)} ${format(y,0)}:</b> ${BEYOND_RANKS.rewards[x][y]}${ee&&BEYOND_RANKS.rewardEff[x][y]?` Currently: <span id='br_eff_${x}_${y}'></span>`:""}</span><br>`
+			table += `<div id="br_reward_${x}_${y}"><b>${getRankTierName(x+5)} ${format(y,0)}</b><span>${BEYOND_RANKS.rewards[x][y]}</span>${ee&&BEYOND_RANKS.rewardEff[x][y]?`<span class="reward-current"><small>Current</small><span id='br_eff_${x}_${y}'></span></span>`:""}</div>`
 		}
-		table += '<br>'
 	}
 	br_rewards_table.setHTML(table)
 

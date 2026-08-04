@@ -1054,7 +1054,7 @@ function updateRanksHTML() {
                 let desc = ""
                 for (let i = 0; i < keys.length; i++) {
                     if (player.ranks[rn].lt(keys[i])) {
-                        desc = ` At ${RANKS.fullNames[x]} ${format(keys[i],0)} - ${RANKS.desc[rn][keys[i]]}`
+                        desc = `${RANKS.fullNames[x]} ${format(keys[i],0)}: ${RANKS.desc[rn][keys[i]]}`
                         break
                     }
                 }
@@ -1143,7 +1143,7 @@ function updateRanksHTML() {
                 let desc = ""
                 for (let i = 0; i < keys.length; i++) {
                     if (p.lt(keys[i]) && (tmp.chal13comp || p.lte(PRES_BEFOREC13[x]||Infinity))) {
-                        desc = ` At ${PRESTIGES.fullNames[x]} ${format(keys[i],0)} - ${PRESTIGES.rewards[x][keys[i]]}`
+                        desc = `${PRESTIGES.fullNames[x]} ${format(keys[i],0)}: ${PRESTIGES.rewards[x][keys[i]]}`
                         break
                     }
                 }

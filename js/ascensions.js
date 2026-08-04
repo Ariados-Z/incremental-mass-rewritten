@@ -145,8 +145,9 @@ function setupAscensionsHTML() {
 			<button id="asc_auto_${x}" class="btn" style="width: 80px;" onclick="ASCENSIONS.autoSwitch(${x})">OFF</button>
 			<span id="asc_scale_${x}""></span>${ASCENSIONS.fullNames[x]} <h4 id="asc_amt_${x}">X</h4><br><br>
 			<button onclick="ASCENSIONS.reset(${x})" class="btn reset" id="asc_${x}">
-				${ASCENSIONS.resetName[x]} (force an Infinity reset), but ${ASCENSIONS.fullNames[x]} up.<span id="asc_desc_${x}"></span><br>
-				Req: <span id="asc_req_${x}">X</span>
+				<span class="reset-action">${ASCENSIONS.resetName[x]} (force an Infinity reset) to gain a ${ASCENSIONS.fullNames[x]}.</span>
+				<span class="reset-next"><small>Next reward</small><span id="asc_desc_${x}"></span></span>
+				<span class="reset-req"><small>Requires</small><b id="asc_req_${x}">X</b></span>
 			</button>
 		</div>`
 	}
@@ -158,7 +159,7 @@ function setupAscensionsHTML() {
 		table += `<div id="asc_reward_div_${x}">`
 		let keys = Object.keys(ASCENSIONS.rewards[x])
 		for (let y = 0; y < keys.length; y++) {
-			table += `<span id="asc_reward_${x}_${y}"><b>${ASCENSIONS.fullNames[x]} ${keys[y]}:</b> ${ASCENSIONS.rewards[x][keys[y]]}${ASCENSIONS.rewardEff[x][keys[y]]?` Currently: <span id='asc_eff_${x}_${y}'></span>`:""}</span><br>`
+			table += `<div id="asc_reward_${x}_${y}"><b>${ASCENSIONS.fullNames[x]} ${keys[y]}</b><span>${ASCENSIONS.rewards[x][keys[y]]}</span>${ASCENSIONS.rewardEff[x][keys[y]]?`<span class="reward-current"><small>Current</small><span id='asc_eff_${x}_${y}'></span></span>`:""}</div>`
 		}
 		table += `</div>`
 	}
@@ -178,7 +179,7 @@ function updateAscensionsHTML() {
             let desc = ""
             for (let i = 0; i < keys.length; i++) {
                 if (p.lt(keys[i]) && (tmp.chal13comp || p.lte(Infinity))) {
-                    desc = ` At ${ASCENSIONS.fullNames[x]} ${format(keys[i],0)} - ${ASCENSIONS.rewards[x][keys[i]]}`
+                    desc = `${ASCENSIONS.fullNames[x]} ${format(keys[i],0)}: ${ASCENSIONS.rewards[x][keys[i]]}`
                     break
                 }
             }
