@@ -518,7 +518,7 @@ function updateHTML() {
     tmp.el.app.setDisplay(tmp.inf_time != 2 && tmp.inf_time != 3 && tmp.start && (player.supernova.times.lte(0) && !player.supernova.post_10 ? !tmp.supernova.reached : true) && displayMainTab)
 	updateSupernovaEndingHTML()
 	updateTabsHTML()
-	if (!player.options.nav_hide[1]) updateResourcesHTML()
+	if (!player.options.nav_hide[1] || window.innerWidth <= 700) updateResourcesHTML()
 	if (hover_tooltip) updateTooltipResHTML()
 	updateUpperHTML()
 	if (tmp.start && (!tmp.supernova.reached || player.supernova.post_10) && displayMainTab) {
