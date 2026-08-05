@@ -1350,13 +1350,14 @@ function updateTreeHTML() {
     let c16 = tmp.c16active
     let req = ""
     let t_ch = TREE_UPGS.ids[tmp.supernova.tree_choosed]
-    if (tmp.supernova.tree_choosed != "") req = t_ch.req?`<span class="${t_ch.req()?"green":"red"}">${t_ch.reqDesc?" Requirement: "+(typeof t_ch.reqDesc == "function"?t_ch.reqDesc():t_ch.reqDesc):""}</span>`:""
+    if (tmp.supernova.tree_choosed != "") req = t_ch.req?`<div class="tree-requirement ${t_ch.req()?"green":"red"}">${t_ch.reqDesc?"Requirement: "+(typeof t_ch.reqDesc == "function"?t_ch.reqDesc():t_ch.reqDesc):""}</div>`:""
     tmp.el.tree_desc.setHTML(
-        tmp.supernova.tree_choosed == "" ? `<div style="font-size: 12px; font-weight: bold;"><span class="gray">(click any tree upgrade to show)</span></div>`
-        : `<div style="font-size: 12px; font-weight: bold;"><span class="gray">(click again to buy if affordable)</span>${req}</div>
-        ${`<span class="sky"><b>[${tmp.supernova.tree_choosed}]</b> ${t_ch.desc}</span>`.corrupt(c16 && CORRUPTED_TREE.includes(tmp.supernova.tree_choosed))}<br>
-        <span>Cost: ${format(t_ch.cost,2)} ${t_ch.qf?'Quantum foam':t_ch.cs?'<span class="corrupted_text">Corrupted Shard</span>':'Neutron star'}</span><br>
-        <span class="green">${t_ch.effDesc?"Currently: "+t_ch.effDesc(tmp.supernova.tree_eff[tmp.supernova.tree_choosed]):""}</span>
+        tmp.supernova.tree_choosed == "" ? `<div class="tree-hint gray">(click any tree upgrade to show)</div>`
+        : `<div class="tree-hint gray">(click again to buy if affordable)</div>
+        ${req}
+        <div class="tree-description sky">${`<b>[${tmp.supernova.tree_choosed}]</b> ${t_ch.desc}`.corrupt(c16 && CORRUPTED_TREE.includes(tmp.supernova.tree_choosed))}</div>
+        <div class="tree-cost">Cost: ${format(t_ch.cost,2)} ${t_ch.qf?'Quantum foam':t_ch.cs?'<span class="corrupted_text">Corrupted Shard</span>':'Neutron star'}</div>
+        <div class="tree-effect green">${t_ch.effDesc?"Currently: "+t_ch.effDesc(tmp.supernova.tree_eff[tmp.supernova.tree_choosed]):""}</div>
         `
     )
 

@@ -123,6 +123,7 @@ body {
     color: white;
     background-color: hsl(0, 0%, 7%);
 	overflow: hidden;
+	font-variant-numeric: tabular-nums;
 	font-size: 14px;
 	margin: 0px;
 	user-select: none;
@@ -196,6 +197,26 @@ button {
 	justify-content: center;
 	flex-flow: row wrap;
 	margin-bottom: 5px;
+}
+
+.tree-header {
+	display: flex;
+	flex-direction: column;
+	min-height: 130px;
+	gap: 3px;
+}
+
+.tree-resource {
+	order: 1;
+}
+
+#tree_desc {
+	order: 2;
+}
+
+.tree-reset {
+	order: 3;
+	margin-top: auto;
 }
 
 #tree_canvas {
@@ -1633,9 +1654,10 @@ h4 {
 	}
 
 	#resources_table > div {
-		flex: 0 0 auto;
-		width: auto;
-		min-width: 112px;
+		box-sizing: border-box;
+		flex: 0 0 176px;
+		width: 176px;
+		min-width: 176px;
 		height: 46px;
 		margin: 0;
 		padding: 0 7px;
@@ -1651,9 +1673,86 @@ h4 {
 	}
 
 	#resources_table > div > div > span {
+		flex: 0 0 124px;
+		width: 124px;
 		margin-right: 0 !important;
 		font-size: 10px;
 		line-height: 1.25;
+		white-space: nowrap;
+	}
+
+	.tree-header {
+		box-sizing: border-box;
+		display: flex;
+		flex-direction: column;
+		height: auto !important;
+		min-height: 130px;
+		padding: 12px 10px 14px;
+		gap: 10px;
+		border: 1px solid var(--mobile-border);
+		border-radius: 10px;
+		background-color: var(--mobile-panel);
+	}
+
+	.tree-resource {
+		order: 1;
+		min-height: 18px;
+		font-weight: bold;
+	}
+
+	#tree_desc {
+		box-sizing: border-box;
+		order: 2;
+		width: 100%;
+		min-height: 20px;
+		line-height: 1.4;
+	}
+
+	.tree-reset {
+		position: static !important;
+		order: 3;
+		margin-top: auto;
+	}
+
+	.tree-reset .btn {
+		box-sizing: border-box;
+		width: 250px;
+		max-width: 100%;
+	}
+
+	.tree-hint,
+	.tree-requirement,
+	.tree-description,
+	.tree-cost,
+	.tree-effect {
+		text-align: left;
+		text-wrap: pretty;
+		overflow-wrap: break-word;
+	}
+
+	.tree-hint {
+		margin-bottom: 6px;
+		font-size: 11px;
+		font-weight: bold;
+	}
+
+	.tree-requirement {
+		margin-bottom: 8px;
+		padding: 7px 9px;
+		border: 1px solid currentColor;
+		border-radius: 6px;
+		background-color: #101010;
+		font-size: 12px;
+		font-weight: bold;
+	}
+
+	.tree-description {
+		margin-bottom: 7px;
+	}
+
+	.tree-cost,
+	.tree-effect {
+		margin-top: 4px;
 	}
 
 	#resources_table img {
