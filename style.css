@@ -1878,10 +1878,16 @@ h4 {
 	#notify {
 		box-sizing: border-box;
 		z-index: 60;
-		top: calc(10px + env(safe-area-inset-top));
+		top: auto;
+		bottom: calc(var(--mobile-nav-height) + env(safe-area-inset-bottom) + 10px);
 		width: calc(100% - 24px);
 		padding: 9px 14px;
 		border-radius: 8px;
+	}
+
+	#notify.hide {
+		top: auto;
+		bottom: -130px;
 	}
 
 	.popup {
