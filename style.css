@@ -2337,6 +2337,16 @@ h4 {
 		flex: 0 0 500px;
 	}
 
+	#stab_frame7_1 > .table_center:has(> #glyph_upg_table) {
+		box-sizing: border-box;
+		width: 100%;
+		justify-content: flex-start;
+		overflow-x: auto;
+		overflow-y: hidden;
+		-webkit-overflow-scrolling: touch;
+		scrollbar-width: thin;
+	}
+
 	#supernova_scene,
 	#inf_popup {
 		box-sizing: border-box;
