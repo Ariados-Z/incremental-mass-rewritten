@@ -216,11 +216,17 @@ function updateTabsHTML() {
 
 function updateUpperHTML() {
 	let chal_unl = player.chal.active > 0
+	document.documentElement.classList.toggle("challenge-active", chal_unl)
 	tmp.el.chal_upper.setVisible(chal_unl)
 	if (chal_unl) {
 		let data = CHALS.getChalData(player.chal.active, tmp.chal.bulk[player.chal.active].max(player.chal.comps[player.chal.active]))
-		tmp.el.chal_upper.setHTML(`You are now in [${CHALS[player.chal.active].title}] Challenge! Go over ${tmp.chal.format(tmp.chal.goal[player.chal.active])+CHALS.getResName(player.chal.active)} to complete.
-		<br>+${tmp.chal.gain} Completions (+1 at ${tmp.chal.format(data.goal)+CHALS.getResName(player.chal.active)})`)
+		tmp.el.chal_upper.setHTML(`
+			<span class="challenge-status-copy">
+				<strong>CHALLENGE ${player.chal.active}: ${CHALS[player.chal.active].title}</strong>
+				<small>Goal ${tmp.chal.format(tmp.chal.goal[player.chal.active])+CHALS.getResName(player.chal.active)} · +${tmp.chal.gain} completions · Next ${tmp.chal.format(data.goal)+CHALS.getResName(player.chal.active)}</small>
+			</span>
+			<button onclick="CHALS.exit()">Exit</button>
+		`)
 	}
 
 	/*

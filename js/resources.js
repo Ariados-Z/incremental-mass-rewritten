@@ -203,7 +203,7 @@ function setupResourcesHTML() {
                     <small class="resource-name">${RESOURCE_NAMES[i]||i}</small>
                     <span class="resource-value" id="${i}_res_desc">X</span>
                 </span>
-                ${rd.resetBtn ? `<small class="resource-action-mark">${i == "br" ? "RIP" : "↻"}</small>` : ""}
+                ${rd.resetBtn ? `<small class="resource-action-mark" id="${i}_res_action_mark">${i == "br" ? "RIP" : "↻"}</small>` : ""}
                 <div><img src="images/${rd.icon||"mass"}.png"></div>
             </div>
         </div>
@@ -226,6 +226,8 @@ function updateResourcesHTML() {
     let qu_gs = tmp.preQUGlobalSpeed
     let inf_gs = tmp.preInfGlobalSpeed
     let visibleResources = 0
+    document.documentElement.classList.toggle("big-rip-active", player.qu.rip.active)
+    tmp.el.big_rip_status.setDisplay(player.qu.rip.active)
 
     for (i in RESOURCES_DIS) {
         let rd = RESOURCES_DIS[i]
@@ -239,6 +241,8 @@ function updateResourcesHTML() {
             tmp.el[i+"_res_desc"].setHTML(window.innerWidth <= 700 ? compactResourceDesc(desc) : desc)
         }
     }
+    tmp.el.br_res_div.el.classList.toggle("active", player.qu.rip.active)
+    tmp.el.br_res_action_mark.setTxt(player.qu.rip.active ? "RIP ON" : "RIP")
     document.documentElement.style.setProperty("--mobile-resource-rows", Math.max(1, Math.ceil(visibleResources / 5)))
 }
 
