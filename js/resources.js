@@ -173,6 +173,7 @@ const INF_GS_RES = ['qu','br','dark']
 function updateResourcesHTML() {
     let qu_gs = tmp.preQUGlobalSpeed
     let inf_gs = tmp.preInfGlobalSpeed
+    let visibleResources = 0
 
     for (i in RESOURCES_DIS) {
         let rd = RESOURCES_DIS[i]
@@ -181,9 +182,11 @@ function updateResourcesHTML() {
         tmp.el[i+"_res_div"].setDisplay(unl)
 
         if (unl) {
+            visibleResources++
             tmp.el[i+"_res_desc"].setHTML(rd.desc(INF_GS_RES.includes(i) ? inf_gs : qu_gs))
         }
     }
+    document.documentElement.style.setProperty("--mobile-resource-rows", Math.max(1, Math.ceil(visibleResources / 5)))
 }
 
 function updateResourcesHiderHTML() {

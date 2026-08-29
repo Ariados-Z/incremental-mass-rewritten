@@ -1798,7 +1798,7 @@ function setupElementsHTML() {
 	let table = ""
     let num = 0
     for (let k = 1; k <= MAX_ELEM_TIERS; k++) {
-        let hs = `style="width: ${50*ELEMENTS.max_hsize[k-1]}px; margin: auto"`
+        let hs = `style="--element-columns: ${ELEMENTS.max_hsize[k-1]}; width: ${50*ELEMENTS.max_hsize[k-1]}px; margin: auto"`
         let n = 0, p = (k+3)**2*2, xs = ELEMENTS.exp[k-1], xe = ELEMENTS.exp[k]
         table += `<div id='elemTier${k}_div'><div ${hs}><div class='table_center'>`
         for (let i = 0; i < ELEMENTS.map[k-1].length; i++) {

@@ -198,11 +198,17 @@ function updateTabsHTML() {
 		if (tmp.el["tab_frame"+x]) tmp.el["tab_frame"+x].setDisplay(x == tmp.tab)
 		if (TABS[2][x]) {
 			tmp.el["stabs"+x].setDisplay(x == tmp.tab)
-			if (x == tmp.tab) for (let y = 0; y < TABS[2][x].length; y++)  {
-				let stab = TABS[2][x][y]
-				tmp.el["stab"+x+"_"+y].setDisplay(stab.unl ? stab.unl() : true)
-				tmp.el["stab"+x+"_"+y].setClasses({btn_tab: true, [stab.style ? stab.style : "normal"]: true, choosed: y == tmp.stab[x]})
-				if (tmp.el["stab_frame"+x+"_"+y]) tmp.el["stab_frame"+x+"_"+y].setDisplay(y == tmp.stab[x])
+			if (x == tmp.tab) {
+				let visibleStabs = 0
+				for (let y = 0; y < TABS[2][x].length; y++)  {
+					let stab = TABS[2][x][y]
+					let visible = stab.unl ? stab.unl() : true
+					tmp.el["stab"+x+"_"+y].setDisplay(visible)
+					if (visible) visibleStabs++
+					tmp.el["stab"+x+"_"+y].setClasses({btn_tab: true, [stab.style ? stab.style : "normal"]: true, choosed: y == tmp.stab[x]})
+					if (tmp.el["stab_frame"+x+"_"+y]) tmp.el["stab_frame"+x+"_"+y].setDisplay(y == tmp.stab[x])
+				}
+				tmp.el["stabs"+x].el.style.setProperty("--mobile-subtab-count", visibleStabs)
 			}
 		}
 	}
