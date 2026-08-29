@@ -138,10 +138,18 @@
                             <div class="bosons">
                                 <div class="table_center">
                                     <div class="graviton sub_b">
-                                        You have <span id="graviton_amt">X</span> Graviton, which speed up Boson production by <span id="graviton_eff0">Y</span>
+                                        <div class="boson-title">Graviton <strong id="graviton_amt">X</strong></div>
+                                        <div class="effect-list">
+                                            <div class="effect-row"><span class="effect-label">Boson production</span><strong class="effect-value">x<span id="graviton_eff0">Y</span></strong></div>
+                                        </div>
                                     </div>
                                     <div class="higgs_boson sub_b">
-                                        <span id="higgs_bosons">You have <span id="hb_amt">X</span> Higgs Boson, which raise Graviton’s effect by <span id="hb_eff0">Y</span></span>
+                                        <div id="higgs_bosons">
+                                            <div class="boson-title">Higgs Boson <strong id="hb_amt">X</strong></div>
+                                            <div class="effect-list">
+                                                <div class="effect-row"><span class="effect-label">Graviton effect</span><strong class="effect-value">^<span id="hb_eff0">Y</span></strong></div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div><div class="table_center">
                                     <div class="photon sub_b">
@@ -154,14 +162,25 @@
                                     </div>
                                 </div><div class="table_center">
                                     <div class="w_boson sub_b">
-                                        <span id="w_boson1">
-                                            You have <span id="pos_w_amt">X</span> W<sup>+</sup> Boson, which multiply Mass gain by <span id="pos_w_eff0">Y</span>,<br> multiply W<sup>-</sup> Boson gain by <span id="pos_w_eff1">Y</span><span id="pos_w_eff2">Z</span>
-                                        </span>
-                                        <br><br>
-                                        You have <span id="neg_w_amt">X</span> W<sup>-</sup> Boson, which make Mass gain softcap^2 starts ^<span id="neg_w_eff0">Y</span> later,<br> multiply W<sup>+</sup> Boson gain by <span id="neg_w_eff1">Y</span>
+                                        <div id="w_boson1">
+                                            <div class="boson-title">W<sup>+</sup> Boson <strong id="pos_w_amt">X</strong></div>
+                                            <div class="effect-list">
+                                                <div class="effect-row"><span class="effect-label">Mass gain</span><strong class="effect-value">x<span id="pos_w_eff0">Y</span></strong></div>
+                                                <div class="effect-row"><span class="effect-label">W<sup>-</sup> gain</span><strong class="effect-value">x<span id="pos_w_eff1">Y</span><span id="pos_w_eff2">Z</span></strong></div>
+                                            </div>
+                                        </div>
+                                        <div class="boson-title">W<sup>-</sup> Boson <strong id="neg_w_amt">X</strong></div>
+                                        <div class="effect-list">
+                                            <div class="effect-row"><span class="effect-label">Mass softcap²</span><strong class="effect-value">^<span id="neg_w_eff0">Y</span> later</strong></div>
+                                            <div class="effect-row"><span class="effect-label">W<sup>+</sup> gain</span><strong class="effect-value">x<span id="neg_w_eff1">Y</span></strong></div>
+                                        </div>
                                     </div>
                                     <div class="z_boson sub_b">
-                                        You have <span id="z_boson_amt">X</span> Z<sup>0</sup> Boson, which multiply Tickspeed Power by <span id="z_boson_eff0">Y</span>,<br> multiply W Bosons gain by <span id="z_boson_eff1">Y</span>
+                                        <div class="boson-title">Z<sup>0</sup> Boson <strong id="z_boson_amt">X</strong></div>
+                                        <div class="effect-list">
+                                            <div class="effect-row"><span class="effect-label">Tickspeed power</span><strong class="effect-value">x<span id="z_boson_eff0">Y</span></strong></div>
+                                            <div class="effect-row"><span class="effect-label">W Boson gain</span><strong class="effect-value">x<span id="z_boson_eff1">Y</span></strong></div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -496,15 +515,16 @@
                             </div>
                         </div><div id="stab_frame7_1">
                             <div id="FSS_eff2"></div><br>
-                            <button onclick="darkRun()" class="btn half_full tooltip" id="dark_run_btn" tooltip-html="Dark Running will force a Dark reset, and will trap you into Big Rip with quantum challenge modifiers [8,8,8,8,8,8,8,8]. You will produce <b>Glyphic Mass</b> based on resources which nerf things, and choosing a glyph to earn will exit a Dark Run."></button>
-                            <button class="btn half_full" onclick="player.dark.run.gmode = (player.dark.run.gmode+1)%3">Glyph Button Mode: <span id="mg_btn_mode">X</span></button>
-                            <button class="btn half_full" onclick="player.dark.run.glyphs = [E(0),E(0),E(0),E(0),E(0),E(0)]">Clear all glyphs</button>
-                            <br><br>
-                            <div>
+                            <div class="compact-action-bar dark-run-actions">
+                                <button onclick="darkRun()" class="btn tooltip" id="dark_run_btn" tooltip-html="Dark Running will force a Dark reset, and will trap you into Big Rip with quantum challenge modifiers [8,8,8,8,8,8,8,8]. You will produce <b>Glyphic Mass</b> based on resources which nerf things, and choosing a glyph to earn will exit a Dark Run."></button>
+                                <button class="btn" onclick="player.dark.run.gmode = (player.dark.run.gmode+1)%3">Glyph Mode: <span id="mg_btn_mode">X</span></button>
+                                <button class="btn" onclick="player.dark.run.glyphs = [E(0),E(0),E(0),E(0),E(0),E(0)]">Clear Glyphs</button>
+                            </div>
+                            <div class="glyph-amount-controls">
                                 <button class="btn" onclick="player.dark.run.gamount = 0">=0</button>
                                 <button class="btn" onclick="player.dark.run.gamount = Math.max(1,player.dark.run.gamount-10)">-10</button>
                                 <button class="btn" onclick="player.dark.run.gamount = Math.max(1,player.dark.run.gamount-1)">-1</button>
-                                <span style="margin: 0 10px;">+<span id="mg_max_gain">X</span> to maximum gain any glyph</span>
+                                <span class="glyph-amount-label">+<span id="mg_max_gain">X</span> to maximum gain any glyph</span>
                                 <button class="btn" onclick="player.dark.run.gamount++">+1</button>
                                 <button class="btn" onclick="player.dark.run.gamount += 10">+10</button>
                             </div><br>

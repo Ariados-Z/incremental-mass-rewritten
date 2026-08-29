@@ -450,12 +450,23 @@ function setupFermionsHTML() {
             let id = `f${FERMIONS.names[i]}${x}`
             table += `
             <button id="${id}_div" class="fermion_btn ${FERMIONS.names[i]}" onclick="FERMIONS.choose(${i},${x})">
-                <b>[${FERMIONS.sub_names[i][x]}]</b><br>[<span id="${id}_tier_scale"></span>Tier <span id="${id}_tier">0</span>]<br>
-                <span id="${id}_cur">Currently: X</span><br>
-                Next Tier at: <span id="${id}_nextTier">X</span><br>
-                (Increased by ${f.inc})<br><br>
-                Effect: <span id="${id}_desc">X</span><br>
-                On Active: ${f.cons}
+                <span class="fermion-title"><b>${FERMIONS.sub_names[i][x]}</b><span><span id="${id}_tier_scale"></span>Tier <span id="${id}_tier">0</span></span></span>
+                <span id="${id}_cur" class="fermion-current">Current resource: X</span>
+                <span class="effect-list">
+                    <span class="effect-row">
+                        <span class="effect-label">Next tier</span>
+                        <strong class="effect-value" id="${id}_nextTier">X</strong>
+                        <small>Scaled by ${f.inc}</small>
+                    </span>
+                    <span class="effect-row">
+                        <span class="effect-label">Effect</span>
+                        <strong class="effect-value" id="${id}_desc">X</strong>
+                    </span>
+                    <span class="effect-row effect-warning">
+                        <span class="effect-label">While active</span>
+                        <strong class="effect-value">${f.cons}</strong>
+                    </span>
+                </span>
             </button>
             `
         }
@@ -511,7 +522,7 @@ function updateFermionsHTML() {
 
                 tmp.el[id+"_cur"].setDisplay(active)
                 if (active) {
-                    tmp.el[id+"_cur"].setTxt(`Currently: ${fm(
+                    tmp.el[id+"_cur"].setTxt(`Current resource: ${fm(
                         r[i][x]
                     )}`)
                 }

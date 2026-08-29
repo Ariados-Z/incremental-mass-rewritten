@@ -299,20 +299,33 @@ function setupRadiationHTML() {
         let [b1, b2] = [`rad_boost_${2*x}`,`rad_boost_${2*x+1}`]
         table += `
         <div id="${id}_div" class="table_center radiation">
-            <div class="sub_rad" style="width: 450px">
-                Your distance of ${name}'s wave is <span id="${id}_distance">0</span> meters.<br>Which multiples ${x==0?"Frequency":"distance of "+RADIATION.names[x-1]} gain by <span id="${id}_disEff">1</span>x
+            <div class="sub_rad radiation-summary" style="width: 450px">
+                <div class="effect-list">
+                    <div class="effect-row">
+                        <span class="effect-label">${name} wavelength</span>
+                        <strong class="effect-value"><span id="${id}_distance">0</span> m</strong>
+                    </div>
+                    <div class="effect-row">
+                        <span class="effect-label">Boosts ${x==0?"Frequency":RADIATION.names[x-1]+" distance"}</span>
+                        <strong class="effect-value">x<span id="${id}_disEff">1</span></strong>
+                    </div>
+                </div>
             </div><div class="table_center sub_rad" style="align-items: center">
                 <button id="${b1}_btn" class="btn rad" onclick="RADIATION.buyBoost(${2*x})">
-                    Aplitude: <span id="${b1}_lvl1">0</span><br>
-                    Cost: <span id="${b1}_cost">0</span> meters
+                    <span class="effect-label">Amplitude</span>
+                    <strong><span id="${b1}_lvl1">0</span></strong>
+                    <small>Cost: <span id="${b1}_cost">0</span> m</small>
                 </button><button id="${b2}_btn" class="btn rad" onclick="RADIATION.buyBoost(${2*x+1})">
-                    Velocity: <span id="${b2}_lvl1">0</span><br>
-                    Cost: <span id="${b2}_cost">0</span> meters
+                    <span class="effect-label">Velocity</span>
+                    <strong><span id="${b2}_lvl1">0</span></strong>
+                    <small>Cost: <span id="${b2}_cost">0</span> m</small>
                 </button>
-            </div><div class="sub_rad" style="width: 100%">
-                ${RADIATION.boosts[3*x].title} [<span id="rad_level_${3*x}">0</span>]: <span id="rad_level_${3*x}_desc">0</span><br>
-                ${RADIATION.boosts[3*x+1].title} [<span id="rad_level_${3*x+1}">0</span>]: <span id="rad_level_${3*x+1}_desc">0</span><br>
-                ${RADIATION.boosts[3*x+2].title} [<span id="rad_level_${3*x+2}">0</span>]: <span id="rad_level_${3*x+2}_desc">0</span>
+            </div><div class="sub_rad radiation-effects" style="width: 100%">
+                <div class="effect-list">
+                    <div class="effect-row"><span class="effect-label">${RADIATION.boosts[3*x].title} · Lv <span id="rad_level_${3*x}">0</span></span><strong class="effect-value" id="rad_level_${3*x}_desc">0</strong></div>
+                    <div class="effect-row"><span class="effect-label">${RADIATION.boosts[3*x+1].title} · Lv <span id="rad_level_${3*x+1}">0</span></span><strong class="effect-value" id="rad_level_${3*x+1}_desc">0</strong></div>
+                    <div class="effect-row"><span class="effect-label">${RADIATION.boosts[3*x+2].title} · Lv <span id="rad_level_${3*x+2}">0</span></span><strong class="effect-value" id="rad_level_${3*x+2}_desc">0</strong></div>
+                </div>
             </div>
         </div>
         `

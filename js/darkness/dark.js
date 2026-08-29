@@ -271,18 +271,18 @@ function updateDarkHTML() {
 
             let eff = dtmp.shadowEff
 
-            let e = getNextDarkEffectFromID(1) +`
-                Boosts mass gain by <b>^${eff.mass.format(3)}</b><br>
-                Boosts dark ray gain by <b>x${eff.ray.format(3)}</b>
+            let e = `<div class="effect-list">${getNextDarkEffectFromID(1)}
+                ${effectRow("Mass gain", `^${eff.mass.format(3)}`)}
+                ${effectRow("Dark Ray gain", `x${eff.ray.format(3)}`)}
             `
 
-            if (eff.bp) e += `<br>Boosts blueprint particles gain by <b>x${eff.bp.format(3)}</b>`
-            if (eff.sn) e += `<br>Makes you becoming <b>x${eff.sn.format(3)}</b> more supernovas`+eff.sn.softcapHTML(7.5,hasElement(9,1))
-            if (eff.en) e += `<br>Boosts entropy earned by <b>x${eff.en.format(3)}</b>`
-            if (eff.ab) e += `<br>Boosts abyssal blots earned by <b>x${eff.ab.format(3)}</b>`
-            if (eff.bhp) e += `<br>Boosts exponent from the mass of BH formula by <b>+${eff.bhp.format(3)}</b><br>Uncaps BH-Exponent Boost's effect`.corrupt(c16)
+            if (eff.bp) e += effectRow("Blueprint Particle gain", `x${eff.bp.format(3)}`)
+            if (eff.sn) e += effectRow("Supernovas per reset", `x${eff.sn.format(3)}${eff.sn.softcapHTML(7.5,hasElement(9,1))}`)
+            if (eff.en) e += effectRow("Entropy gain", `x${eff.en.format(3)}`)
+            if (eff.ab) e += effectRow("Abyssal Blot gain", `x${eff.ab.format(3)}`)
+            if (eff.bhp) e += effectRow("BH formula exponent", `+${eff.bhp.format(3)}`) + effectRow("BH exponent cap", "Removed".corrupt(c16))
 
-            tmp.el.dsEff.setHTML(e)
+            tmp.el.dsEff.setHTML(e + `</div>`)
 
             tmp.el.ab_div.setDisplay(tmp.chal14comp)
             if (tmp.chal14comp) {
@@ -290,34 +290,34 @@ function updateDarkHTML() {
 
                 eff = dtmp.abEff
 
-                e = getNextDarkEffectFromID(2) + `
-                    Boosts dark shadows gain by <b>x${eff.shadow.format(3)}</b>
-                    <br>Makes mass gain softcaps 4-${hasElement(159)?8:6} start <b>^${eff.msoftcap.format(3)}</b> later
+                e = `<div class="effect-list">${getNextDarkEffectFromID(2)}
+                    ${effectRow("Dark Shadow gain", `x${eff.shadow.format(3)}`)}
+                    ${effectRow(`Mass softcaps 4-${hasElement(159)?8:6}`, `^${eff.msoftcap.format(3)} later`)}
                 `
 
-                if (eff.hr) e += `<br>Boosts hawking radiation gain by <b>x${eff.hr.format(3)}</b>`
-                if (eff.pb) e += `<br>Boosts prestige base's multiplier by <b>x${eff.pb.format(3)}</b>`
-                if (eff.csp) e += `<br>Boosts cosmic string's power by <b>x${eff.csp.format(3)}</b>`
-                if (eff.mexp) e += `<br>`+`Boosts all matters gain by <b>^${eff.mexp.format(3)}</b>`.corrupt(c16)
-                if (eff.accelPow) e += `<br>Boosts accelerator power by <b>x${eff.accelPow.format(3)}</b>`+eff.accelPow.softcapHTML(5,hasElement(234))
-                if (eff.ApQ_Overflow) e += `<br>Atomic power & quark overflows start <b>^${eff.ApQ_Overflow.format(3)}</b> later`
-                if (eff.fss) e += `<br>Final Star Shards are <b>${formatPercent(eff.fss-1)}</b> stronger`
-                if (eff.ea) e += `<br>Raises Exotic Atom's formula by <b>${format(eff.ea)}</b>`+eff.ea.softcapHTML(1.75)
+                if (eff.hr) e += effectRow("Hawking Radiation gain", `x${eff.hr.format(3)}`)
+                if (eff.pb) e += effectRow("Prestige Base multiplier", `x${eff.pb.format(3)}`)
+                if (eff.csp) e += effectRow("Cosmic String power", `x${eff.csp.format(3)}`)
+                if (eff.mexp) e += effectRow("All Matter gain", `^${eff.mexp.format(3)}`.corrupt(c16))
+                if (eff.accelPow) e += effectRow("Accelerator power", `x${eff.accelPow.format(3)}${eff.accelPow.softcapHTML(5,hasElement(234))}`)
+                if (eff.ApQ_Overflow) e += effectRow("Atomic & Quark overflow", `^${eff.ApQ_Overflow.format(3)} later`)
+                if (eff.fss) e += effectRow("Final Star Shards", `${formatPercent(eff.fss-1)} stronger`)
+                if (eff.ea) e += effectRow("Exotic Atom formula", `^${format(eff.ea)}${eff.ea.softcapHTML(1.75)}`)
 
-                tmp.el.abEff.setHTML(e)
+                tmp.el.abEff.setHTML(e + `</div>`)
             }
 
             eff = dtmp.rayEff
 
-            e = getNextDarkEffectFromID(0) + `
-                Boosts dark shadows gain by <b>x${eff.shadow.format(2)}</b>
+            e = `<div class="effect-list">${getNextDarkEffectFromID(0)}
+                ${effectRow("Dark Shadow gain", `x${eff.shadow.format(2)}`)}
             `
 
-            if (eff.passive) e += `<br>Passively gains <b>${formatPercent(eff.passive)}</b> of dark rays gained on reset per second`
-            if (eff.glyph) e += `<br>Earns <b>x${format(eff.glyph,3)}</b> more glyphic mass`
-            if (eff.dChal) e += `<br>Adds <b>${format(eff.dChal,0)}</b> more C13-15 maximum completions`+eff.dChal.softcapHTML(100,hasBeyondRank(3,12))
+            if (eff.passive) e += effectRow("Passive Dark Rays", `${formatPercent(eff.passive)}/sec`)
+            if (eff.glyph) e += effectRow("Glyphic Mass gain", `x${format(eff.glyph,3)}`)
+            if (eff.dChal) e += effectRow("C13-15 max completions", `+${format(eff.dChal,0)}${eff.dChal.softcapHTML(100,hasBeyondRank(3,12))}`)
 
-            tmp.el.drEff.setHTML(e)
+            tmp.el.drEff.setHTML(e + `</div>`)
         } else if (tmp.stab[7] == 1) {
             updateDarkRunHTML()
         } else if (tmp.stab[7] == 2) {
@@ -333,9 +333,13 @@ function getNextDarkEffectFromID(i) {
 
     if (p.gte(q[q.length-1])) return ""
     else while (s <= q.length-1) {
-        if (p.lt(q[s])) return "Next "+['Ray','Shadow','Abyssal Blot'][i]+"'s effect at <b>" + format(q[s]) + "</b><br><br>"
+        if (p.lt(q[s])) return `<div class="effect-next"><span>Next effect</span><b>${format(q[s])} ${['Dark Rays','Dark Shadows','Abyssal Blots'][i]}</b></div>`
         s++
     }
+}
+
+function effectRow(label, value) {
+    return `<div class="effect-row"><span class="effect-label">${label}</span><strong class="effect-value">${value}</strong></div>`
 }
 
 function getDarkSave() {

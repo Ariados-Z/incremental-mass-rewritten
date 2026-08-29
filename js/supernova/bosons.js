@@ -232,12 +232,12 @@ function setupBosonsHTML() {
             let id2 = id+"_upg"+y
             table += `
             <button class="btn b_btn full" id="${id2}_div" onclick="BOSONS.upgs.buy('${id}',${y})">
-                <div style="min-height: 80px">
-                    [Level <span id="${id2}_lvl">X</span>]<br>
-                    ${BOSONS.upgs[id][y].desc}<br>
-                    Currently: <span id="${id2}_eff">X</span><br>
-                </div>
-                Cost: <span id="${id2}_cost">X</span> ${capitalFirst(id)}
+                <span class="upgrade-level">Level <span id="${id2}_lvl">X</span></span>
+                <span class="effect-list">
+                    <span class="effect-row"><span class="effect-label">Upgrade</span><strong class="effect-value">${BOSONS.upgs[id][y].desc}</strong></span>
+                    <span class="effect-row"><span class="effect-label">Current</span><strong class="effect-value" id="${id2}_eff">X</strong></span>
+                    <span class="effect-row"><span class="effect-label">Cost</span><strong class="effect-value"><span id="${id2}_cost">X</span> ${capitalFirst(id)}</strong></span>
+                </span>
             </button>
             `
         }
