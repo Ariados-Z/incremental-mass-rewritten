@@ -197,13 +197,14 @@ function setupResourcesHTML() {
         let rd = RESOURCES_DIS[i]
 
         h1 += `
-        <div id="${i}_res_div">
+        <div id="${i}_res_div" ${rd.resetBtn ? `class="resource-action" role="button" tabindex="0" onclick="reset_res_btn('${i}')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();reset_res_btn('${i}')}"` : ""}>
             <div ${i in TOOLTIP_RES ? `id="${i}_tooltip" class="tooltip ${rd.class||""}" tooltip-pos="left" tooltip-align="left" tooltip-text-align="left"` : `class="${rd.class||""}"`}>
                 <span class="resource-copy">
                     <small class="resource-name">${RESOURCE_NAMES[i]||i}</small>
                     <span class="resource-value" id="${i}_res_desc">X</span>
                 </span>
-                <div><img src="images/${rd.icon||"mass"}.png" ${rd.resetBtn ? `onclick="reset_res_btn('${i}')" style="cursor: pointer;"` : ""}></div>
+                ${rd.resetBtn ? `<small class="resource-action-mark">${i == "br" ? "RIP" : "↻"}</small>` : ""}
+                <div><img src="images/${rd.icon||"mass"}.png"></div>
             </div>
         </div>
         `
