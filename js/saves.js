@@ -278,7 +278,7 @@ function getPlayerData() {
         tickspeed: E(0),
         accelerator: E(0),
         options: {
-            font: 'Verdana',
+            font: 'Source Sans Pro',
             notation: 'sc',
             tree_animation: 0,
             massDis: 0,
@@ -334,6 +334,7 @@ function loadPlayer(load) {
     const DATA = getPlayerData()
     player = deepNaN(load, DATA)
     player = deepUndefinedAndDecimal(player, DATA)
+    if (["Verdana", "Verdana, Geneva, Tahoma, sans-serif"].includes(player.options.font)) player.options.font = "Source Sans Pro"
     convertStringToDecimal()
     player.qu.qc.presets = player.qu.qc.presets.slice(0,5)
     player.reset_msg = ""

@@ -138,6 +138,54 @@ const RESOURCES_DIS = {
     */
 }
 
+const RESOURCE_NAMES = {
+    mass: "Mass",
+    rp: "Rage Power",
+    dm: "Dark Matter",
+    bh: "Black Hole",
+    atom: "Atoms",
+    quarks: "Quarks",
+    md: "Rel. Particles",
+    sn: "Supernovas",
+    qu: "Quantum Foam",
+    br: "Death Shards",
+    dark: "Dark Rays",
+    fss: "Final Shards",
+    corrupt: "Corrupted",
+    speed: "Global Speed",
+    inf: "Infinity Points",
+}
+
+function compactHUDPart(text) {
+    return text
+        .replace(/e(\d{1,3}(?:,\d{3}){2,})/g, (_, value) => "e" + compactGroupedNumber(value, true))
+        .replace(/\b(\d{1,3}(?:,\d{3}){2,})\b/g, (_, value) => compactGroupedNumber(value))
+        .replace(/(\d+\.\d{2})\d+/g, "$1")
+        .replace(" OoMs^2/sec", " OoM²/s")
+        .replace(" OoMs/sec", " OoM/s")
+        .replace(" arvs/sec", " arv/s")
+        .replaceAll("/sec", "/s")
+}
+
+function compactGroupedNumber(value, exponent=false) {
+    let digits = value.replaceAll(",", "")
+    let suffixes = ["", "K", "M", "B", "T", "Qa", "Qi", "Sx", "Sp", "Oc"]
+    let group = Math.floor((digits.length - 1) / 3)
+    let lead = digits.length - group * 3
+    let short = digits.slice(0, lead) + "." + digits.slice(lead, lead + 2)
+    return short + (suffixes[group] || (exponent ? `e${group*3}` : `e${digits.length-1}`))
+}
+
+function compactResourceDesc(html) {
+    let parts = html.split("<br>").slice(0, 2).map(compactHUDPart)
+    let amount = parts[0]
+    let rate = parts[1] || ""
+
+    if (rate.startsWith("(+")) rate = "+" + rate.slice(2, -1)
+
+    return `<span class="resource-amount">${amount}</span>${rate ? `<span class="resource-rate">${rate}</span>` : ""}`
+}
+
 function reset_res_btn(id) { RESOURCES_DIS[id].resetBtn() }
 
 function hide_res(id) { player.options.res_hide[id] = !player.options.res_hide[id] }
@@ -151,7 +199,10 @@ function setupResourcesHTML() {
         h1 += `
         <div id="${i}_res_div">
             <div ${i in TOOLTIP_RES ? `id="${i}_tooltip" class="tooltip ${rd.class||""}" tooltip-pos="left" tooltip-align="left" tooltip-text-align="left"` : `class="${rd.class||""}"`}>
-                <span style="margin-right: 5px; text-align: right;" id="${i}_res_desc">X</span>
+                <span class="resource-copy">
+                    <small class="resource-name">${RESOURCE_NAMES[i]||i}</small>
+                    <span class="resource-value" id="${i}_res_desc">X</span>
+                </span>
                 <div><img src="images/${rd.icon||"mass"}.png" ${rd.resetBtn ? `onclick="reset_res_btn('${i}')" style="cursor: pointer;"` : ""}></div>
             </div>
         </div>
@@ -183,7 +234,8 @@ function updateResourcesHTML() {
 
         if (unl) {
             visibleResources++
-            tmp.el[i+"_res_desc"].setHTML(rd.desc(INF_GS_RES.includes(i) ? inf_gs : qu_gs))
+            let desc = rd.desc(INF_GS_RES.includes(i) ? inf_gs : qu_gs)
+            tmp.el[i+"_res_desc"].setHTML(window.innerWidth <= 700 ? compactResourceDesc(desc) : desc)
         }
     }
     document.documentElement.style.setProperty("--mobile-resource-rows", Math.max(1, Math.ceil(visibleResources / 5)))
