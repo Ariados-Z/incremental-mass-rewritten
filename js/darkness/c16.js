@@ -187,7 +187,7 @@ function corruptedShardGain() {
 
     x = x.mul(exoticAEff(0,0))
 
-    return x.overflow('ee12',0.25).floor()
+    return x.overflow('ee12',0.25).floor().mul(4)
 }
 
 function updateC16Temp() {
