@@ -76,6 +76,12 @@
 <body onload="loadGame()">
     <input id="copy" style="position: absolute; top: 0; left: 0; user-select: all; visibility: hidden;">
     <div id="tooltip-div"></div>
+    <dialog id="mobile_inspect_dialog" aria-labelledby="mobile_inspect_title">
+        <header><h2 id="mobile_inspect_title">Information</h2><button type="button" id="mobile_inspect_close" onclick="closeMobileInspection()">Close</button></header>
+        <p class="mobile-inspect-note">Read-only inspection. Nothing is bought or activated.</p>
+        <div id="mobile_inspect_content"></div>
+        <footer><span>Close to inspect another item.</span><button type="button" onclick="toggleMobileInspection(false)">Done inspecting</button></footer>
+    </dialog>
     <div id="loading" class='table_center' style="align-items: center; height: 100%;">
         <div>
             <img src="images/logo.png" style="height: 50%;"><br>
@@ -104,6 +110,17 @@
     </div>
     <div id='app' style='display: none;'>
         <div id="star"></div>
+        <div id="mobile_hud_tools">
+            <div id="mobile_infinity_status">
+                <div class="mobile-theorem-count"><span>Infinity Theorems</span><strong id="mobile_infinity_theorems"></strong></div>
+                <div class="mobile-infinity-progress">
+                    <div><span id="mobile_infinity_label">To Infinity</span><strong id="mobile_infinity_percent"></strong></div>
+                    <progress id="mobile_infinity_progress" max="1" value="0" aria-label="Progress to Infinity"></progress>
+                </div>
+            </div>
+            <div id="mobile_inspect_hint">Need details?<small>Inspect, then tap an item.</small></div>
+            <button id="mobile_inspect_toggle" type="button" aria-pressed="false" onclick="toggleMobileInspection()">Inspect<small>Tap to read</small></button>
+        </div>
         <button id="big_rip_status" onclick="BIG_RIP.rip()">BIG RIP ACTIVE <span>Tap to exit</span></button>
         <div class="table_center" style="height: 100%; width: 100%;">
             <div id="tabs">
@@ -345,7 +362,7 @@
                         </div>
                     </div><div id="tab_frame3">
                         <div id="stab_frame3_0">
-                            <div class="mobile-summary">Note: Click any image to show challenge description. Click again to enter any challenge.</div><br class="desktop-summary-gap">
+                            <div id="challenge_inspect_hint" class="mobile-summary">Note: Click any image to show challenge description. Click again to enter any challenge.</div><br class="desktop-summary-gap">
                             <div class="table_center" style="width: 100%;">
                                 <div style="width: calc(50%);">
                                     <div id="chals_table"></div>

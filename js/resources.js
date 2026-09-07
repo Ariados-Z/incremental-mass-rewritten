@@ -123,7 +123,7 @@ const RESOURCES_DIS = {
         icon: "inf",
         class: "yellow",
 
-        desc: (gs)=>player.inf.points.format(0)+"<br>(+"+tmp.IP_gain.format(0)+")"+"<br>("+formatPercent(player.mass.max(1).log10().max(1).log10().div(tmp.inf_limit.max(1).log10().max(10).log10()).max(0).min(1))+(tmp.brokenInf?" to next infinity)":" to infinity)"),
+        desc: (gs)=>player.inf.points.format(0)+"<br>(+"+tmp.IP_gain.format(0)+")"+"<br>("+formatPercent(infinityProgress())+(tmp.brokenInf?" to next infinity)":" to infinity)"),
 
         resetBtn() { INF.goInf() },
     },
@@ -154,6 +154,10 @@ const RESOURCE_NAMES = {
     corrupt: "Corrupted",
     speed: "Global Speed",
     inf: "Infinity Points",
+}
+
+function infinityProgress() {
+    return player.mass.max(1).log10().max(1).log10().div(tmp.inf_limit.max(1).log10().max(10).log10()).max(0).min(1)
 }
 
 function compactHUDPart(text) {
@@ -244,6 +248,18 @@ function updateResourcesHTML() {
     tmp.el.br_res_div.el.classList.toggle("active", player.qu.rip.active)
     tmp.el.br_res_action_mark.setTxt(player.qu.rip.active ? "RIP ON" : "RIP")
     document.documentElement.style.setProperty("--mobile-resource-rows", Math.max(1, Math.ceil(visibleResources / 5)))
+
+    tmp.el.mobile_infinity_status.setDisplay(tmp.inf_unl)
+    tmp.el.mobile_inspect_hint.setDisplay(!tmp.inf_unl)
+    if (tmp.inf_unl) {
+        let progress = infinityProgress()
+        let label = tmp.brokenInf ? "To next Infinity" : "To Infinity"
+        tmp.el.mobile_infinity_theorems.setTxt(player.inf.theorem.format(0))
+        tmp.el.mobile_infinity_label.setTxt(label)
+        tmp.el.mobile_infinity_percent.setTxt(formatPercent(progress))
+        tmp.el.mobile_infinity_progress.el.value = progress.toNumber()
+        tmp.el.mobile_infinity_progress.el.setAttribute("aria-label", label)
+    }
 }
 
 function updateResourcesHiderHTML() {

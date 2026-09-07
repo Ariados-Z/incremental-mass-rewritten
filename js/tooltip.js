@@ -11,6 +11,16 @@ const TOOLTIP_CONFING = {
 function updateTooltips() {
     let style = tooltip_div.style
 
+    if (mobileInspection.enabled && document.getElementById('app').style.display === 'none') {
+        toggleMobileInspection(false)
+    }
+
+    if (mobileInspection.enabled && window.innerWidth <= 700) {
+        style.display = 'none'
+        tt_time = 0
+        return
+    }
+
     if (hover_tooltip) {
         let attr_html = hover_tooltip.getAttribute('tooltip-html') || '';
 
@@ -92,8 +102,125 @@ function updateTooltipOnChange() {
 
 function setupTooltips() {
     updateTooltipOnChange()
+    setupMobileInspection()
 
     setInterval(updateTooltips,1000/30)
 
     // setInterval(updateTooltipOnChange,100)
+}
+
+const mobileInspection = { enabled: false, installed: false, returnFocus: null }
+const MOBILE_INSPECT_SELECTOR = '.tooltip, [tooltip], .resource-action, .img_btn[id^="main_upg_"], .elements[id^="elementID_"], .img_btn[id^="glyph_upg"], .btn_tree, .img_chal'
+
+function toggleMobileInspection(enabled = !mobileInspection.enabled) {
+    mobileInspection.enabled = enabled && window.innerWidth <= 700
+    document.documentElement.classList.toggle('mobile-inspecting', mobileInspection.enabled)
+    let button = document.getElementById('mobile_inspect_toggle')
+    button.setAttribute('aria-pressed', mobileInspection.enabled)
+    button.innerHTML = mobileInspection.enabled ? 'Inspect: ON<small>Tap an item</small>' : 'Inspect<small>Tap to read</small>'
+    let hint = document.getElementById('challenge_inspect_hint')
+    if (!hint.dataset.defaultText) hint.dataset.defaultText = hint.textContent
+    hint.textContent = mobileInspection.enabled
+        ? 'Tap a challenge to inspect it. Challenges cannot be entered while Inspect is on.'
+        : hint.dataset.defaultText
+    hover_tooltip = null
+    updateTooltips()
+    if (!mobileInspection.enabled) closeMobileInspection()
+}
+
+function closeMobileInspection() {
+    document.getElementById('mobile_inspect_dialog').close()
+}
+
+// Reuse the desktop detail renderers, restoring their selection without buying or resetting.
+function readMobileInspectionPanel(state, key, selection, update, panelId) {
+    let previous = state[key]
+    try {
+        state[key] = selection
+        update()
+        return document.getElementById(panelId).innerHTML
+    } finally {
+        state[key] = previous
+        update()
+    }
+}
+
+function mobileInspectionHTML(target) {
+    let id = target.id
+    if (/^main_upg_\d+_\d+$/.test(id)) {
+        let selection = id.slice(9).split('_').map(Number)
+        return readMobileInspectionPanel(player, 'main_upg_msg', selection, updateMainUpgradesHTML, 'main_upg_msg')
+    }
+    if (/^elementID_\d+$/.test(id)) {
+        return readMobileInspectionPanel(tmp.elements, 'choosed', Number(id.slice(10)), updateElementsHTML, 'elem_ch_div')
+    }
+    if (/^glyph_upg\d+$/.test(id)) {
+        return readMobileInspectionPanel(tmp, 'mass_glyph_msg', Number(id.slice(9)), updateDarkRunHTML, 'glyph_upg_msg')
+    }
+    if (target.matches('.btn_tree') && id.startsWith('treeUpg_')) {
+        return readMobileInspectionPanel(tmp.supernova, 'tree_choosed', id.slice(8), updateTreeHTML, 'tree_desc')
+    }
+    if (/^chal_btn_\d+$/.test(id)) {
+        return readMobileInspectionPanel(player.chal, 'choosed', Number(id.slice(9)), updateChalHTML, 'chal_desc_div')
+    }
+    let tooltip = target.matches('.tooltip, [tooltip]') ? target : target.querySelector('.tooltip, [tooltip]')
+    if (tooltip) {
+        updateTooltipResHTML(true)
+        if (tooltip.hasAttribute('tooltip')) {
+            let text = document.createElement('span')
+            text.textContent = tooltip.getAttribute('tooltip')
+            return text.innerHTML
+        }
+        return tooltip.getAttribute('tooltip-html') || '<p>No additional details for this item yet.</p>'
+    }
+    if (target.matches('.inf_upg')) return target.innerHTML
+    return `<p>This control has no hover description. Exit inspection mode to use it.</p>`
+}
+
+function showMobileInspection(target) {
+    let content = document.getElementById('mobile_inspect_content')
+    content.innerHTML = mobileInspectionHTML(target)
+    // A detail panel may also contain an Enter/Buy button. The reading copy is never interactive.
+    content.querySelectorAll('button, input, select, textarea, .tree-hint').forEach(node => node.remove())
+    content.querySelectorAll('*').forEach(node => {
+        for (let attribute of [...node.attributes]) {
+            if (attribute.name.startsWith('on') || ['id', 'href', 'tabindex', 'contenteditable'].includes(attribute.name)) {
+                node.removeAttribute(attribute.name)
+            }
+        }
+    })
+    mobileInspection.returnFocus = target
+    let dialog = document.getElementById('mobile_inspect_dialog')
+    if (!dialog.open) dialog.showModal()
+    content.scrollTop = 0
+    document.getElementById('mobile_inspect_close').focus({ preventScroll: true })
+}
+
+function handleMobileInspection(event) {
+    if (!mobileInspection.enabled || window.innerWidth > 700) return
+    let target = event.target
+    if (!target.closest || target.closest('#mobile_inspect_toggle, #mobile_inspect_dialog, #tabs, #stabs_div, .btn_tab')) return
+    let item = target.closest(MOBILE_INSPECT_SELECTOR)
+    let control = item || target.closest('[onclick], button, a')
+    if (!control) return
+    event.preventDefault()
+    event.stopImmediatePropagation()
+    showMobileInspection(control)
+}
+
+function setupMobileInspection() {
+    if (mobileInspection.installed) return
+    mobileInspection.installed = true
+    document.addEventListener('click', handleMobileInspection, true)
+    document.addEventListener('keydown', event => {
+        if (event.key === 'Enter' || event.key === ' ') handleMobileInspection(event)
+    }, true)
+    document.getElementById('mobile_inspect_dialog').addEventListener('close', () => {
+        let target = mobileInspection.enabled && mobileInspection.returnFocus
+        let focus = (target && target.isConnected && target.closest('button, [tabindex]')) || document.getElementById('mobile_inspect_toggle')
+        focus.focus({ preventScroll: true })
+    })
+    window.matchMedia('(max-width: 700px)').addEventListener('change', event => {
+        if (!event.matches) toggleMobileInspection(false)
+    })
 }
